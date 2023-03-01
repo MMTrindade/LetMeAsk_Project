@@ -1,7 +1,9 @@
+//Autoimort: Identifica a importação do componente Home e faz de forma automática
+import { Home } from "./pages/Home";
 
 function App() {
   return (
-    <h1>Hello World</h1>
+    <Home />
   );
 }
 
