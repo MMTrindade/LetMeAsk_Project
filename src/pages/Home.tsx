@@ -1,11 +1,21 @@
+import {useHistory} from 'react-router-dom'
+
 //Importing images through webpack
 import illustrationImg from '../assets/images/illustration.svg'
 import logoImg from '../assets/images/logo.svg';
 import googleIconImg from '../assets/images/googleicon.svg';
 //Importing files
 import '../styles/auth.scss';
+//Importing componentes(Remember: components always start with capital letter)
+import { Button } from '../components/Button';
 
 export function Home () {
+
+    const history = useHistory();
+
+    function navigateToNewRoom () {
+        history.push('/rooms/news');
+    }
     return (
         <div id="page-auth">
             <aside>
@@ -28,7 +38,7 @@ export function Home () {
 
                         <input type = "text" placeholder= "Digite o código da sala"/>
 
-                        <button type="submit">Entrar na Sala</button>
+                        <Button type="submit">Entrar na Sala</Button>
 
                     </form>
                 </div>
