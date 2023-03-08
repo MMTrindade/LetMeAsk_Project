@@ -1,5 +1,9 @@
-import {useHistory} from 'react-router-dom'
-
+//Hook para usar um contexto criado
+import { useContext } from 'react';
+//Hook para migrar entre páginas, vinculo a uma função e adiciono um "on click " com a função
+import { useNavigate } from 'react-router-dom';
+//Importo firebase para implementar autenticação com google.
+import { auth, firebase } from '../services/firebase'
 //Importing images through webpack
 import illustrationImg from '../assets/images/illustration.svg'
 import logoImg from '../assets/images/logo.svg';
@@ -8,13 +12,24 @@ import googleIconImg from '../assets/images/googleicon.svg';
 import '../styles/auth.scss';
 //Importing componentes(Remember: components always start with capital letter)
 import { Button } from '../components/Button';
+//Importing Context functionalities created in App
+import { TestContext } from '../App'
 
 export function Home () {
+    const navigate = useNavigate();
+    const value = useContext(TestContext);
 
-    const history = useHistory();
+    //Autenticação do usuário com Firebase
+    function handleCreateRoom () {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        //signInwithPopup: Fazer autenticação direto com Poupup na tela, ao inves de redirecionar o cliente.
+        auth.signInWithPopup(provider).then(result => {
+            console.log(result);
+        })
+    }
 
     function navigateToNewRoom () {
-        history.push('/rooms/news');
+        navigate('/rooms/new');
     }
     return (
         <div id="page-auth">
@@ -27,7 +42,7 @@ export function Home () {
                 <div className="main-content">
                     <img src={logoImg} alt="Letmeask" />
 
-                    <button className='create-room'>
+                    <button onClick={handleCreateRoom} className='create-room'>
                         <img src = {googleIconImg} alt="Logo do Google" />
                         Crie sua sala com o Google
                     </button>
