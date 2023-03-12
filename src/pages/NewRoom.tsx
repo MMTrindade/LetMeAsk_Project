@@ -1,7 +1,8 @@
 //Hook para usar um contexto criado
 import { useContext } from 'react';
-//Importing Context functionalities created in App
-import { TestContext } from '../App'
+
+import { AuthContext} from '../contexts/AuthContext';
+
 //Hook para migrar entre páginas, No caso newRoom e uma ancora, entao uso link to, ao inves de navigate.
 
 import { Link } from 'react-router-dom';
@@ -16,7 +17,9 @@ import '../styles/auth.scss';
 import { Button } from '../components/Button';
 
 export function NewRoom () {
-    const value = useContext(TestContext);
+
+    const { user } = useContext(AuthContext);
+
     return (
         <div id="page-auth">
             <aside>
@@ -24,9 +27,11 @@ export function NewRoom () {
                 <strong> Crie salas de Q&amp;A ao-vivo</strong> 
                 <p> Tire as dúvidas da sua audiência em tempo real</p>
             </aside>
-            <main>
-                <div className="main-content">
+            <main> 
+                <div className="main-content"> 
                     <img src={logoImg} alt="Letmeask" />
+                    <h1> {user?.name} </h1> 
+
 
                     <h2>Criar uma Nova Sala</h2>
 
@@ -47,3 +52,5 @@ export function NewRoom () {
         </div>
     )
 }
+
+// ? is called an optional chaining, used after an oject for the case the property name doesn't exist, it'll return undefined, instead of throwing a  big error.

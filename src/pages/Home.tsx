@@ -13,24 +13,22 @@ import '../styles/auth.scss';
 //Importing componentes(Remember: components always start with capital letter)
 import { Button } from '../components/Button';
 //Importing Context functionalities created in App
-import { TestContext } from '../App'
+import { AuthContext } from '../contexts/AuthContext';
+
 
 export function Home () {
     const navigate = useNavigate();
-    const value = useContext(TestContext);
+    const { user, signInWithGoogle } = useContext (AuthContext)
 
     //Autenticação do usuário com Firebase
-    function handleCreateRoom () {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        //signInwithPopup: Fazer autenticação direto com Poupup na tela, ao inves de redirecionar o cliente.
-        auth.signInWithPopup(provider).then(result => {
-            console.log(result);
-        })
-    }
-
-    function navigateToNewRoom () {
+    async function handleCreateRoom () {
+        if (!user) {
+            await signInWithGoogle()
+        }
         navigate('/rooms/new');
-    }
+        }
+    
+
     return (
         <div id="page-auth">
             <aside>
