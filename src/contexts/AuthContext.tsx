@@ -1,11 +1,9 @@
 //Autoimort: Identifica a importação do componente Home e faz de forma automática> Command, aceitar importacoes automaticas
 //contexto permite features como autenticação funcionarem em todas as páginas sem precisar repetir o código
 //useEffect e um hook para disparo de efeitos colaterais, quando quero disparar uma funcao sempre que algo acontecer, ex: uma informacao mudou.
-import firebase from "firebase/compat";
+//import firebase from "firebase/compat";
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { auth } from "../services/firebase";
-
-
+import { auth, firebase } from "../services/firebase";
 
 type User = {
     id: string;
@@ -30,7 +28,7 @@ export function AuthContextProvider(props : AuthContextProviderProps) {
 
     const [user, setUser] =  useState<User>();
 
-    //Caso onAuthStateChanged, em contato com firebase, detectar que usuario havia logado anteriormente, vai manter o nome do usuario logado mediante a atualizacao da pagina
+    //useEffect: Caso onAuthStateChanged, em contato com firebase, detectar que usuario havia logado anteriormente, vai manter o nome do usuario logado mediante a atualizacao da pagina
     //Boa pratica: Toda vez que se declara um eventlistener no React e recomendado que se use uma variavel, e tambem criar um retorno que te descadastre de todos os event listeners usado
     
     useEffect(() => {

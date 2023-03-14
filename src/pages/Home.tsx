@@ -13,14 +13,14 @@ import '../styles/auth.scss';
 //Importing componentes(Remember: components always start with capital letter)
 import { Button } from '../components/Button';
 //Importing Context functionalities created in App
-import { AuthContext } from '../contexts/AuthContext';
+import {useAuth} from '../hooks/useAuth'
 
 
 export function Home () {
     const navigate = useNavigate();
-    const { user, signInWithGoogle } = useContext (AuthContext)
+    const { user, signInWithGoogle } = useAuth()
 
-    //Autenticação do usuário com Firebase
+    //Autenticação do usuário com Firebase/Verifica se o usuario nao existe=se nao esta logado, dai direciona para a autenticacao
     async function handleCreateRoom () {
         if (!user) {
             await signInWithGoogle()
