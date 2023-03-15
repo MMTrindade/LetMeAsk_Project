@@ -35,7 +35,7 @@ export function NewRoom () {
         }
         //Estou me referindo a um dado da database aqui, e la dentro vou ter uma categoria que se chama rooms
         const roomRef = database.ref('rooms');
-//procurei uma ref rooms, e dentro dela faco um push>Jogo uma info para dentro de rooms (uma nova sala)
+//procurei uma ref rooms, e dentro dela faco um push>Jogo uma info(nova sala) para dentro de rooms(lista no firebase) (uma nova sala). Se fosse info unica, sem ser lista, uso set.
         const firebaseRoom = await roomRef.push({
             title: newRoom,
             authorId: user?.id,

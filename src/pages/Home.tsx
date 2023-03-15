@@ -16,7 +16,7 @@ import { Button } from '../components/Button';
 import {useAuth} from '../hooks/useAuth'
 
 
-export async function Home () {
+export function Home () {
     const navigate = useNavigate();
     const { user, signInWithGoogle } = useAuth()
     const [ roomCode, setRoomCode ] = useState('');
@@ -37,18 +37,21 @@ export async function Home () {
         if (roomCode.trim() === '') {
             return;
         }
-    }
     
-    //Verificando se a sala que o usuario quer existe. Get acessa todos os dados da room.
-    const roomRef = await database.ref(`rooms/${roomCode}`).get();
+    
+        //Verificando se a sala que o usuario quer existe. Get acessa todos os dados da room.
+        const roomRef = await database.ref(`rooms/${roomCode}`).get();
 
-    //Se o que estiver dentro dos parenteses for true, ele envia o alerta. A propriedade exists vai indicar false no caso de roomRef nao existir, e a ! tambem gera false automaticamente, logo o resultado e true.
-    if (!roomRef.exists()) {
-        alert ('Room does not exist.');
-        return;
+        //Se o que estiver dentro dos parenteses for true, ele envia o alerta. A propriedade exists vai indicar false no caso de roomRef nao existir, e a ! tambem gera false automaticamente, logo o resultado e true.
+        if (!roomRef.exists()) {
+            alert ('Room does not exist.');
+            return;
+        }
+        
+        navigate(`/rooms/${roomCode}`);
     }
 
-    navigate(`/rooms/${roomCode}`);
+    
 
     return (
         <div id="page-auth">
