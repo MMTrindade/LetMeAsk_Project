@@ -1,0 +1,20 @@
+{
+  "rules": {
+    "rooms": { ***Qualquer usuario logado pode criar sala
+      ".read": false,
+      ".write": "auth != null",
+      "$roomId": { ***Qualquer pessoa pode acessar uma sala criada. Se !data.esists retornar true, a pergunta nao existe, e deixa criar a pergunta, mas se !data.exists for false, significa que se esta a tentar editar a pergunta ja criada, e nega.
+        ".read": true,
+        ".write": "auth != null && (!data.exists() || data.child('authorId').val() == auth.id)",
+        "questions": { ***Dentro de cada sala, a propriedade questions representa as perguntas da sala. Pra criar uma nova pergunta na sala, o usuario precisa estar autenticado. Para editar uma pergunta, a pessoa precisa ser quem criou a sala. (data.parent leva para o controle de acesso da sala, e pega o id do owner da sala)
+          ".read": true,
+          ".write": "auth != null && (!data.exists() || data.parent().child('authorId').val() == auth.id)",
+          "likes": { ***Para criar like so precisa estar logado, para remover um like, precisa ser o autor do like a remover seu proprio like
+            ".read": true,
+            ".write": "auth != null && (!data.exists() || data.child('authorId').val() == auth.id)",  
+          }
+        }
+      }
+    }
+  }
+}

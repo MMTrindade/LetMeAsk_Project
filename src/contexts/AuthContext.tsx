@@ -12,6 +12,8 @@ type User = {
   }
   
 type AuthContextType = {
+    avatar: any;
+    name: any;
     user: User | undefined; //No primeiro momento nao existe usuario logado, logo ele e undefined!
     signInWithGoogle: () => Promise <void>; //Toda funcao assincrona retorna uma promessa e void - Funcao que nao tem parametros no () e tambem nao tem return dentro dela 
   }

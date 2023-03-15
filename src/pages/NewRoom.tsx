@@ -40,7 +40,7 @@ export function NewRoom () {
             title: newRoom,
             authorId: user?.id,
         })
-//key aqui se trata do id da sala
+//key aqui se trata do id da sala, pra garantir que cda usuario caia na sua sala criada
         navigate(`/rooms/${firebaseRoom.key}`)
 
     }

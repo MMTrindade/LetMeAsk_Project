@@ -1,9 +1,9 @@
 //Hook para usar um contexto criado
-import { useContext } from 'react';
+import { FormEvent, useContext, useState } from 'react';
 //Hook para migrar entre páginas, vinculo a uma função e adiciono um "on click " com a função
 import { useNavigate } from 'react-router-dom';
 //Importo firebase para implementar autenticação com google.
-import { auth, firebase } from '../services/firebase'
+import { auth, database, firebase } from '../services/firebase'
 //Importing images through webpack
 import illustrationImg from '../assets/images/illustration.svg'
 import logoImg from '../assets/images/logo.svg';
@@ -16,9 +16,10 @@ import { Button } from '../components/Button';
 import {useAuth} from '../hooks/useAuth'
 
 
-export function Home () {
+export async function Home () {
     const navigate = useNavigate();
     const { user, signInWithGoogle } = useAuth()
+    const [ roomCode, setRoomCode ] = useState('');
 
     //Autenticação do usuário com Firebase/Verifica se o usuario nao existe=se nao esta logado, dai direciona para a autenticacao
     async function handleCreateRoom () {
@@ -26,8 +27,28 @@ export function Home () {
             await signInWithGoogle()
         }
         navigate('/rooms/new');
+    }
+
+    //Para todo formulario no React preciso dar um preventDefault
+    //Confirguracao para acessar sala
+    async function handleJoinRoom (event: FormEvent) {
+        event.preventDefault();
+
+        if (roomCode.trim() === '') {
+            return;
         }
+    }
     
+    //Verificando se a sala que o usuario quer existe. Get acessa todos os dados da room.
+    const roomRef = await database.ref(`rooms/${roomCode}`).get();
+
+    //Se o que estiver dentro dos parenteses for true, ele envia o alerta. A propriedade exists vai indicar false no caso de roomRef nao existir, e a ! tambem gera false automaticamente, logo o resultado e true.
+    if (!roomRef.exists()) {
+        alert ('Room does not exist.');
+        return;
+    }
+
+    navigate(`/rooms/${roomCode}`);
 
     return (
         <div id="page-auth">
@@ -49,7 +70,7 @@ export function Home () {
 
                     <form>
 
-                        <input type = "text" placeholder= "Digite o código da sala"/>
+                        <input type = "text" placeholder= "Digite o código da sala" onChange={event => setRoomCode(event.target.value)} value = {roomCode}/>
 
                         <Button type="submit">Entrar na Sala</Button>
 
