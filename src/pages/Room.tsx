@@ -36,7 +36,7 @@ type Question = {
 
 //Os parametros da minha pagina ficarao armazenados em params, quero manter o codigo da pagina.
 export function Room(){ 
-    const user = useAuth();
+    const {user} = useAuth();
     const params = useParams<RoomParams>(); //Generics: Para que a funcao saiba quais os parametros que a rota params vai receber
     const roomId = params.id;
     const [newQuestion, setNewQuestion] = useState('');
@@ -112,6 +112,7 @@ export function Room(){
             
             <main className='content'>
                 <div className='room-title'>
+                    <h1>{title}</h1> 
                     {questions.length > 0 && <span>{questions.length} pergunta(s)</span>} {/*if condicao && signigfica then consequencia*/}
                 </div>
 
@@ -122,8 +123,6 @@ export function Room(){
                     onChange={event => setNewQuestion(event.target.value)}
                     value={newQuestion}
                     />
-                    
-                    <h1>{title}</h1> 
 
                     <div className='form-footer'>
                         { user ? ( /* if ->? condicao else -> : consequencia*/
