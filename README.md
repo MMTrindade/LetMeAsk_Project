@@ -1,6 +1,6 @@
 # LetMeAsk_Project 
   
-Project Under Development!
+In order to run the project, type "yarn start" in your terminal, authenticate with Google and create your own Q&A room!
   
 This project consists of a forum for Q&amp;A, where users can build knowledge about some topic. The project is being built using ReactJS.
 
