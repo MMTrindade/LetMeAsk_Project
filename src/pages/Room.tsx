@@ -7,32 +7,14 @@ import { useAuth } from "../hooks/useAuth";
 import { database } from "../services/firebase";
 
 import '../styles/room.scss'
+import { Question } from "../components/Questions/Question";
+import { useRoom } from "../hooks/useRoom";
 
-//Para declarar tipagem de objetos no TS uso Record<tipo da chave, tipo do valor - que nesse caso e outro objeto>
-type FirebaseQuestions = Record<string, {
-    author: {
-        name: string;
-        avatar: string;
-    }
-    content: string; 
-    isAnswered: boolean;
-    isHighlighted: boolean;
-}>
 
 type RoomParams = {
     id: string;
 }
 
-type Question = {
-    id:string;
-    author: {
-        name: string;
-        avatar: string;
-    }
-    content: string; 
-    isAnswered: boolean;
-    isHighlighted: boolean;
-}
 
 //Os parametros da minha pagina ficarao armazenados em params, quero manter o codigo da pagina.
 export function Room(){ 
@@ -40,37 +22,9 @@ export function Room(){
     const params = useParams<RoomParams>(); //Generics: Para que a funcao saiba quais os parametros que a rota params vai receber
     const roomId = params.id;
     const [newQuestion, setNewQuestion] = useState('');
-    const [questions, setQuestions] = useState<Question[]>([])
-    const [title, setTitle] = useState('');
-
-
-    //useEffect, dispara um evento sempre que alguma informacao mudar
-    useEffect(() => {
-        const roomRef = database.ref(`rooms/${roomId}`);
-        
-        //Seguindo a documentacao do Firebase, digo ao Firebase que estou ouvindo um evento faz-se:
-        //.val e uma API do Firebase para buscar os valores que estao dentro da room
-        //roomRef.on -> toda vez que roomId mudar, ele vai executar o codigo abaixo novamente, e substituir as informacoes em tela
-        roomRef.on('value', room => {
-            const databaseRoom = room.val();
-            const firebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {};
-            
-            //Implementando um "Hashmap". Object. entries em um objeto retorna um array com cada posicao contendo ckey e value de um onjeto.
-            const parsedQuestions= Object.entries(firebaseQuestions).map(([key, value]) => {
-                return {
-                    id: key,
-                    content: value.content,
-                    author: value.author,
-                    isHighlighted: value.isHighlighted,
-                    isAnswered: value.isAnswered,
-                }
-            })
-
-            setTitle(databaseRoom.title);
-            setQuestions(parsedQuestions)
-            
-        })
-    }, [roomId]);
+    
+    const {title, questions} = useRoom(roomId)
+    
 
 
     async function handleSendQuestion(event: FormEvent) {
@@ -138,7 +92,20 @@ export function Room(){
                     </div>
                 </form>
 
-                {/*JSON.stringify(questions)*/}
+                {/*Unica forma de percorrer um array e retornar cada item desse array como um componente-metodo map, funciona como um for each, que itera sobre o array, mas map permite retornar items do array tambem. O que e retornado e o conteudo de cada question*/}
+                {/* Toda vez que se usa o map, precisa-se passar ao primeiro elemento do componente uma key, e atribuir uma info unica dentro dela, como question.id, para que o react consiga identificar a diferenca de um item pro outro>Algoritmo de reconciliacao. Em caso contrario, o react monta tudo de novo*/ }
+                <div className="question-list">
+                    {questions.map(question => {
+                        return (
+                            <Question
+                                key={question.id}
+                                content={question.content}  
+                                author={question.author}
+                            />
+                        )
+                    })}
+                </div>
+                
             </main>
         </div>
 
