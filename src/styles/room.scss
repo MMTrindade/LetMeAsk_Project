@@ -17,6 +17,15 @@
         > img {
             max-height: 45 px;
         }
+
+        > div {
+            display: flex;
+            gap: 16px;//Aplicado entre o botao e a box de codigo no header
+        }
+
+        button {
+            height: 40px;
+        }
     }
 }
 
@@ -111,6 +120,8 @@ main {
         }
     }
     .question-list {
+        display: flex;
+        flex-direction: column;
         margin-top: 32px;
         width: 100%;
     }

@@ -41,13 +41,14 @@
         background: transparent;
         cursor: pointer;
         transition: filter 0.2s;
-  
+        
+        //Quando o botao tiver a classe like-button...
         &.like-button {
           display: flex;
           align-items: flex-end;
           color: #737380;
           gap: 8px;
-  
+          //Quando tiver a classe liked, ou seja, apos dar o like.
           &.liked {
             color: #835afd;
   
